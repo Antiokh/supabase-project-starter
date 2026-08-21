@@ -1,0 +1,81 @@
+project_id = "supabase-project-starter"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1"
+openai_api_key = "env(OPENAI_API_KEY)"
+
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+site_url = "http://127.0.0.1:3000"
+additional_redirect_urls = ["https://127.0.0.1:3000"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+enable_anonymous_sign_ins = false
+enable_manual_linking = false
+minimum_password_length = 6
+password_requirements = ""
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+secure_password_change = false
+max_frequency = "1s"
+otp_length = 6
+otp_expiry = 3600
+
+[functions.debug-log]
+enabled = true
+verify_jwt = true
+entrypoint = "./functions/debug-log/index.ts"
+
+[functions.test-cors]
+enabled = true
+verify_jwt = false
+entrypoint = "./functions/test-cors/index.ts"
+
+[functions.env-debug]
+enabled = true
+verify_jwt = false
+entrypoint = "./functions/env-debug/index.ts"
+
+[functions.text-diff]
+enabled = true
+verify_jwt = false
+import_map = "./functions/text-diff/deno.json"
+entrypoint = "./functions/text-diff/index.ts"
+
+[functions.github-send]
+enabled = true
+verify_jwt = true
+import_map = "./functions/github-send/deno.json"
+entrypoint = "./functions/github-send/index.ts"
+
+[functions.whoami]
+enabled = true
+verify_jwt = true
+entrypoint = "./functions/whoami/index.ts"

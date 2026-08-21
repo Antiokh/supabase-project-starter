@@ -1,0 +1,92 @@
+{
+  "minimum_read_set": [
+    "AGENT_SYSTEM_PROMPT.md",
+    "PROJECT_INIT_GUIDE.md",
+    "SUPABASE_SOURCE_OF_TRUTH_GUIDE.md",
+    "HELPERS_REFERENCE.md"
+  ],
+  "must_ask_first": [
+    {
+      "question": "How will this project be hosted: cloud, self-hosted, or hybrid?",
+      "why": "This changes runtime assumptions, deploy guidance, and MCP usage."
+    }
+  ],
+  "topics": [
+    {
+      "topic": "edge_functions",
+      "read": [
+        "SUPABASE_FUNCTIONS_GUIDE.md",
+        "SUPABASE_RUNTIME_GUIDE.md"
+      ]
+    },
+    {
+      "topic": "helpers_or_auth_context",
+      "read": [
+        "HELPERS_REFERENCE.md",
+        "SUPABASE_SECURITY_RULES.md"
+      ]
+    },
+    {
+      "topic": "hosting_or_deploy",
+      "read": [
+        "SUPABASE_RUNTIME_GUIDE.md",
+        "SUPABASE_MCP_GUIDE.md"
+      ]
+    },
+    {
+      "topic": "db_function_versioning",
+      "read": [
+        "SUPABASE_DB_VERSIONING_GUIDE.md",
+        "SUPABASE_DB_VERSIONING_RUNBOOK.md"
+      ]
+    },
+    {
+      "topic": "schema_export",
+      "read": [
+        "SUPABASE_SCHEMA_EXPORT_GUIDE.md",
+        "SUPABASE_CRON_GUIDE.md"
+      ]
+    },
+    {
+      "topic": "storage_or_thumbnails",
+      "read": [
+        "SERVICE_STORAGE_GUIDE.md"
+      ]
+    },
+    {
+      "topic": "telegram",
+      "read": [
+        "SERVICE_TELEGRAM_GUIDE.md",
+        "TELEGRAM_DEBUGGING_GUIDE.md"
+      ]
+    },
+    {
+      "topic": "stripe",
+      "read": [
+        "SERVICE_STRIPE_GUIDE.md"
+      ]
+    },
+    {
+      "topic": "openai",
+      "read": [
+        "SERVICE_OPENAI_GUIDE.md"
+      ]
+    },
+    {
+      "topic": "fal",
+      "read": [
+        "SERVICE_FAL_GUIDE.md"
+      ]
+    }
+  ],
+  "skip_by_default": [
+    "SUPABASE_DB_VERSIONING_GUIDE.md",
+    "SUPABASE_DB_VERSIONING_RUNBOOK.md",
+    "SUPABASE_SCHEMA_EXPORT_GUIDE.md",
+    "SERVICE_OPENAI_GUIDE.md",
+    "SERVICE_STRIPE_GUIDE.md",
+    "SERVICE_TELEGRAM_GUIDE.md",
+    "SERVICE_FAL_GUIDE.md",
+    "SERVICE_STORAGE_GUIDE.md"
+  ]
+}
