@@ -234,21 +234,6 @@ The cron entrypoint templates live here:
 
 - `docs/templates/db-function-versioning/50_cron/`
 
-## Self-trigger isolation
-
-Generated Git publications should not be written back to the same production branch
-watched by Supabase GitHub Integration.
-
-Starter default:
-
-- generated files are committed to `supabase-export`
-- the project creates that branch once during initialization
-- `GITHUB_BRANCH` may override the branch
-- if Automatic branching is enabled, turn on `Supabase changes only`
-
-This prevents the production Supabase deployment workflow from being triggered by
-commits created by Supabase's own export pipeline.
-
 ## CI / Frontend Build Isolation
 
 Git publication of generated DB artifacts can create many repository commits.
