@@ -139,4 +139,4 @@ BEGIN
 
   RETURN v_ddl;
 END;
-$function$
+$function$;
