@@ -50,21 +50,25 @@ All commits created by this Edge Function are generated artifacts.
 
 By default their commit message is prefixed with:
 
-`[CF-Pages-Skip]`
+`[supabase-export]`
 
-Cloudflare Pages recognizes this prefix and skips the build/deployment for that
-commit. This prevents DB function versioning and schema-export publication from
-rebuilding a frontend that happens to live in the same repository.
+This prefix is provider-neutral metadata identifying commits created by Supabase
+export/versioning automation. CI/CD systems may use it for filtering when they
+support custom commit-message rules.
 
 Override with:
 
 - `GITHUB_GENERATED_COMMIT_PREFIX=<custom prefix>`
 - `GITHUB_GENERATED_COMMIT_PREFIX=none` to disable prefixing
 
-For repositories also connected to Cloudflare Pages, configure Build watch paths
-as a second layer so generated-only changes do not trigger builds. Typical rule:
+For repositories also connected to Cloudflare Pages, use Build watch paths because
+Pages does not support registering an arbitrary custom skip prefix. Typical rule:
 
-- exclude `db/**`
+- include `*`
+- exclude `db/*`
+
+Cloudflare's `*` wildcard matches nested path segments, so `db/*` covers generated
+files below `db/`.
 
 If generated exports live elsewhere, exclude those generated paths as well.
 

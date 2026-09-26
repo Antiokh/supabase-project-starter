@@ -5,7 +5,7 @@ import { optionalEnv, requireEnv } from '../_shared/env.ts';
 
 const dbg = createDbg(false);
 
-const DEFAULT_GENERATED_COMMIT_PREFIX = '[CF-Pages-Skip]';
+const DEFAULT_GENERATED_COMMIT_PREFIX = '[supabase-export]';
 
 function generatedCommitPrefix() {
     const configured = optionalEnv('GITHUB_GENERATED_COMMIT_PREFIX');
