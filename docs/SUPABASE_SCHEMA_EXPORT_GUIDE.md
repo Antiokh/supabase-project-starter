@@ -15,13 +15,14 @@ It exists for:
 
 ## What It Is Not
 
-Schema export is not the same thing as function version history.
+Schema export is not the same thing as DB code version history.
 
-Function history tracks:
+DB code history tracks:
 
 - per-function changes over time
+- per-table DDL changes over time
 - active versions
-- Git publication of changed SQL functions
+- Git publication of functions and `db/<schema>.sql` table bundles
 
 Schema export tracks:
 
