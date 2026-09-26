@@ -1,6 +1,6 @@
 # Supabase DB Versioning Runbook
 
-This runbook covers the smallest recovery path that should exist in every project using the starter's DB function versioning module.
+This runbook covers the smallest recovery path that should exist in every project using the starter's DB code versioning module.
 
 ## Read This With
 
@@ -69,12 +69,14 @@ If bootstrap inserted queue rows but publication failed mid-run:
 If bootstrap was never run for the schema at all:
 
 ```sql
-select archive.bootstrap_functions_to_github('public', 20);
+select archive.bootstrap_functions_to_github('public', 0);
+select archive.bootstrap_tables_to_github('public', 0);
+select archive.process_github_push_queue(5);
 ```
 
 Do not run bootstrap repeatedly as a blind retry loop.
 
-The queue deduplicates by `function_history_id`, so repeated bootstrap is usually harmless, but it hides the real operational problem.
+The queue deduplicates function jobs by `function_history_id` and table bundles by their table-history revision marker, so repeated bootstrap is usually harmless, but it hides the real operational problem.
 
 ### Incremental sync stopped pushing updates
 
