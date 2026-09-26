@@ -243,22 +243,15 @@ as Cloudflare Pages, those generated commits must not cause frontend rebuilds.
 
 Starter default:
 
-- `github-send` prefixes generated commits with `[supabase-export]`
+- `github-send` prefixes generated commits with `[CF-Pages-Skip]`
 - projects may override the prefix with `GITHUB_GENERATED_COMMIT_PREFIX`
 - set `GITHUB_GENERATED_COMMIT_PREFIX=none` only when skip behavior is unwanted
 
-The prefix is intentionally provider-neutral and should not depend on a specific
-frontend host.
+The default prefix is Cloudflare Pages-specific on purpose: generated export
+commits use `[CF-Pages-Skip]` so Pages skips the frontend deployment entirely.
 
-For Cloudflare Pages, configure Build watch paths to exclude the generated
-publication directory:
-
-- include: `*`
-- exclude: `db/*`
-
-Cloudflare Pages has a fixed set of commit-message skip tokens, so the generic
-`[supabase-export]` marker is informational there; path filtering is what skips
-the build.
+Projects using another CI/CD provider may override
+`GITHUB_GENERATED_COMMIT_PREFIX` or disable it with `none`.
 
 This applies to both function-version publication and generic generated files sent
 through `github-send`.
