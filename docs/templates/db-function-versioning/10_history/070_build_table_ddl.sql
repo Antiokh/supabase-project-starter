@@ -119,7 +119,7 @@ BEGIN
           ELSE ''
         END,
         CASE
-          WHEN array_length(pol.polroles, 1) IS NULL THEN 'PUBLIC'
+          WHEN array_length(pol.polroles, 1) IS NULL OR 0 = ANY(pol.polroles) THEN 'PUBLIC'
           ELSE (
             SELECT string_agg(quote_ident(r.rolname), ', ')
             FROM pg_roles r
