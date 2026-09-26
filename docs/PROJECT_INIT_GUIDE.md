@@ -96,13 +96,13 @@ Read only the guides you need:
 If the same repository is connected to a frontend deployment provider:
 
 1. keep generated DB artifacts in an explicit generated path such as `db/**`
-2. keep the default `[supabase-export]` prefix from `github-send`
+2. keep the default `[CF-Pages-Skip]` prefix from `github-send`
 3. for Cloudflare Pages, set Build watch paths to include `*` and exclude `db/*`
 4. verify one generated publication does not trigger a frontend deployment
 
-The default `[supabase-export]` prefix is provider-neutral. Override
-`GITHUB_GENERATED_COMMIT_PREFIX` only if the project needs a different semantic
-marker. Use `none` to disable the prefix entirely.
+The default `[CF-Pages-Skip]` prefix is intended for repositories deployed by
+Cloudflare Pages. Override `GITHUB_GENERATED_COMMIT_PREFIX` for another CI/CD
+provider, or use `none` to disable prefixing.
 
 ## 8. Prefer A Manual First Run
 
