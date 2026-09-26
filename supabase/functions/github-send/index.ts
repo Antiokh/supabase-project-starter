@@ -67,7 +67,7 @@ Deno.serve(async req => {
 
         const owner = requireEnv('GITHUB_OWNER');
         const repo = requireEnv('GITHUB_REPO');
-        const branch = optionalEnv('GITHUB_BRANCH') || 'supabase-export';
+        const branch = optionalEnv('GITHUB_BRANCH') || 'main';
         const octokit = getOctokit();
 
         let path: string;
