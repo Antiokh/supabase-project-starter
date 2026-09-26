@@ -2,7 +2,7 @@
 
 This guide defines the starter's database-side code versioning model.
 
-It is focused on SQL functions as code, not on the full schema snapshot.
+It versions SQL functions and table DDL as database code. The broader JSON schema snapshot remains a separate workflow.
 
 ## Mission
 
@@ -19,8 +19,9 @@ The starter should support a repeatable workflow where:
 This guide covers:
 
 - function history
+- table DDL history
 - change detection
-- queue-based Git publication
+- shared queue-based Git publication
 - bootstrap flow
 - cron flow
 - recovery flow
@@ -74,7 +75,7 @@ Key responsibilities:
 
 ### 3. Queue layer
 
-Changed functions are not pushed to Git directly from every update path.
+Changed functions and table bundles are not pushed to Git directly from update paths.
 
 Instead:
 
@@ -117,12 +118,26 @@ The reusable versioning module is expected to provide these objects.
 - `archive.update_functions`
 - `archive.diff_text`
 
+### Table history
+
+- `archive.table_history`
+- `archive.build_table_ddl`
+- `archive.save_table_history`
+- `archive.update_table_history`
+- `archive.update_tables`
+- `archive.setup_table_history`
+
+Table DDL history records ALTERs and DROP tombstones. Git publication emits the
+current active table set as `db/<schema>.sql`.
+
 ### Queue and publication
 
 - `archive.github_push_queue`
 - `archive.process_github_push_queue`
 - `archive.github_send_function`
+- `archive.github_send_tables`
 - `archive.push_updated_functions_to_github`
+- `archive.push_updated_tables_to_github`
 - `archive.bootstrap_functions_to_github`
 - `archive.push`
 
@@ -225,6 +240,10 @@ Example intent:
 
 - periodically retry pending queue items
 - cleanly converge after temporary GitHub or network failures
+
+The scan/enqueue path and the network publication path are intentionally separate.
+This keeps Git/network latency out of schema scans and prevents large bootstrap
+runs from hitting runtime/statement timeouts.
 
 Keep the cron model small and explicit.
 
