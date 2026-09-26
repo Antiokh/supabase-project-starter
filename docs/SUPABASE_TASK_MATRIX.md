@@ -21,20 +21,20 @@ This file maps common tasks to the correct docs, helpers, and workflows.
   - inspect `supabase/sql/020_reference_user_profiles_rls.sql`
   - pair it with a user-JWT function such as `supabase/functions/whoami`
 
-## DB Function Versioning
+## DB Code Versioning
 
 - Install DB function versioning prerequisites
   - read `SUPABASE_DB_VERSIONING_GUIDE.md`
   - inspect `docs/templates/db-function-versioning/00_install/`
 - Apply the DB function versioning module in the correct order
   - read `docs/templates/db-function-versioning/APPLY_ORDER.md`
-- Bootstrap function history
+- Bootstrap function/table history
   - read `SUPABASE_DB_VERSIONING_GUIDE.md`
   - inspect `docs/templates/db-function-versioning/90_bootstrap/`
-- Push updated SQL functions to Git
+- Push updated SQL functions or table bundles to Git
   - read `SUPABASE_DB_VERSIONING_GUIDE.md`
   - inspect `docs/templates/db-function-versioning/30_publish/`
-- Wire scheduled SQL function publication
+- Wire scheduled DB-code scan and queue draining
   - read `SUPABASE_CRON_GUIDE.md`
   - inspect `docs/templates/db-function-versioning/50_cron/`
 - Investigate failed queue items
