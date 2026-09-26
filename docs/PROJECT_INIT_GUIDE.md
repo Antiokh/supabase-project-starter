@@ -91,19 +91,7 @@ Read only the guides you need:
 - `SERVICE_FAL_GUIDE.md`
 - `SERVICE_STORAGE_GUIDE.md`
 
-## 7. Create The Generated Export Branch
-
-If DB function versioning or schema publication writes generated artifacts to Git:
-
-1. create a persistent `supabase-export` branch from the current default branch
-2. keep `github-send` pointed at that branch (the starter default)
-3. if Supabase Automatic branching is enabled, enable `Supabase changes only`
-4. do not merge routine generated export commits back into `main`
-
-This prevents Supabase GitHub Integration from triggering production deployments
-for commits created by its own export pipeline.
-
-## 8. Isolate Generated Git Publications From Frontend Builds
+## 7. Isolate Generated Git Publications From Frontend Builds
 
 If the same repository is connected to a frontend deployment provider:
 
@@ -116,7 +104,7 @@ The default `[CF-Pages-Skip]` prefix is intended for repositories deployed by
 Cloudflare Pages. Override `GITHUB_GENERATED_COMMIT_PREFIX` for another CI/CD
 provider, or use `none` to disable prefixing.
 
-## 9. Prefer A Manual First Run
+## 8. Prefer A Manual First Run
 
 Before cron or automation:
 
@@ -128,7 +116,7 @@ Before cron or automation:
 
 Only then add scheduled execution.
 
-## 10. Wire Cron Last
+## 9. Wire Cron Last
 
 When the manual path is stable:
 
@@ -137,7 +125,7 @@ When the manual path is stable:
 3. wire schema export cadence if needed
 4. keep scheduler entrypoints small
 
-## 11. Agent Rule
+## 10. Agent Rule
 
 When starting work in a project derived from this starter, the minimum read set is:
 
