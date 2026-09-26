@@ -55,15 +55,16 @@ At minimum, review:
 - `supabase/sql/010_call_edge_function.sql`
 - `supabase/sql/020_reference_user_profiles_rls.sql`
 
-## 4. Decide Whether DB Function Versioning Is Enabled
+## 4. Decide Whether DB Code Versioning Is Enabled
 
-If the project needs SQL function history and Git publication:
+If the project needs SQL function/table history and Git publication:
 
 1. read `SUPABASE_DB_VERSIONING_GUIDE.md`
 2. apply `docs/templates/db-function-versioning/APPLY_ORDER.md`
 3. wire the publication boundary through `public.call_edge_function(...)`
-4. bootstrap the initial function history
-5. wire a scheduler only after manual flow works
+4. bootstrap initial function and table history
+5. verify bounded queue draining
+6. wire separate scan and queue-drain schedulers only after manual flow works
 
 If not, skip this module entirely.
 
