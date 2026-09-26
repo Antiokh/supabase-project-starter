@@ -59,6 +59,7 @@ Deno.serve(async req => {
         const schema = body.schema;
         const functionName = body.function_name;
         const overloads = body.overloads;
+        const tables = body.tables;
 
         const legacyArgs = body.args;
         const legacyReturnType = body.return_type;
@@ -73,10 +74,42 @@ Deno.serve(async req => {
         let path: string;
         let content: string;
         let commitMessage: string;
-        let responseMode: 'legacy' | 'grouped' | 'file';
+        let responseMode: 'legacy' | 'grouped' | 'table_bundle' | 'file';
         let overloadCount = 0;
 
-        if (genericPath && typeof genericContent === 'string') {
+        if (Array.isArray(tables)) {
+            if (!schema) {
+                return Response.json({ error: 'schema is required for table bundle' }, { status: 400 });
+            }
+
+            const blocks = tables
+                .map((table: Record<string, string>) => {
+                    const tableName = String(table.table_name ?? '');
+                    const ddl = String(table.ddl ?? '')
+                        .replace(/\r\n/g, '\n')
+                        .replace(/\\n/g, '\n')
+                        .trim();
+                    return tableName && ddl ? `-- table: ${tableName}\n\n${ddl}` : '';
+                })
+                .filter(Boolean);
+
+            if (blocks.length === 0) {
+                return Response.json({ error: 'no tables provided' }, { status: 400 });
+            }
+
+            path = `db/${schema}.sql`;
+            content =
+                `-- AUTO-GENERATED. DO NOT EDIT.\n` +
+                `-- Schema:   ${schema}\n` +
+                `-- Entity:   tables\n` +
+                `-- Mode:     table_bundle\n` +
+                `-- Updated:  ${new Date().toISOString()}\n\n` +
+                blocks.join('\n\n') + '\n';
+            commitMessage = withGeneratedCommitPrefix(
+                `sql tables update: ${schema} (${blocks.length} table${blocks.length === 1 ? '' : 's'})`,
+            );
+            responseMode = 'table_bundle';
+        } else if (genericPath && typeof genericContent === 'string') {
             path = String(genericPath);
             content = genericContent;
             commitMessage = withGeneratedCommitPrefix(genericMessage || `file update: ${path}`);

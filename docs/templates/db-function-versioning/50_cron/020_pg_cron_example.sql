@@ -1,12 +1,17 @@
 /*
-Example pg_cron wiring for DB function publication.
-
-Adjust cadence for your project.
-Do not assume pg_cron is available in every environment.
+Scan and publication are intentionally separate.
+The scan only detects and enqueues changes.
+The queue job performs bounded network work.
 */
 
 select cron.schedule(
-    'archive-push',
+    'archive-versioning-scan',
     '*/10 * * * *',
     $$select archive.push_cron();$$
+);
+
+select cron.schedule(
+    'archive-github-push-queue',
+    '* * * * *',
+    $$select archive.process_github_push_queue_cron(5);$$
 );
