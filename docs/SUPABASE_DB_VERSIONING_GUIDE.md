@@ -253,6 +253,12 @@ commits use `[CF-Pages-Skip]` so Pages skips the frontend deployment entirely.
 Projects using another CI/CD provider may override
 `GITHUB_GENERATED_COMMIT_PREFIX` or disable it with `none`.
 
+Important: `[CF-Pages-Skip]` only controls Cloudflare Pages. It is not a Supabase
+GitHub Integration skip directive. If generated artifacts are committed to the
+Supabase production branch, Supabase may still start its integration workflow;
+the generated commit should simply contain no new migrations, Edge Function
+changes, or other deployable Supabase configuration.
+
 This applies to both function-version publication and generic generated files sent
 through `github-send`.
 
