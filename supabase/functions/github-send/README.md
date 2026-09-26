@@ -69,3 +69,24 @@ If generated exports live elsewhere, exclude those generated paths as well.
 
 Do not exclude application source paths or migration paths merely to save builds;
 the path exclusion is for generated publication artifacts.
+
+
+## Dedicated export branch
+
+By default, generated publications target `supabase-export`, not the repository's
+production branch.
+
+Reason: when the repository is also connected to Supabase GitHub Integration,
+committing generated DB artifacts back to the production branch causes a deployment
+workflow to be triggered by Supabase's own export commit.
+
+Project initialization should create `supabase-export` once from the current
+default branch before enabling automatic publication.
+
+Override with `GITHUB_BRANCH` if a project intentionally uses another export
+branch.
+
+If Supabase Automatic branching is enabled, also enable `Supabase changes only`
+so the export branch's `db/**`-only commits do not create preview branches.
+
+Generated commits still use `[CF-Pages-Skip]` by default for Cloudflare Pages.
