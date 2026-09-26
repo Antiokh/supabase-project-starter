@@ -56,6 +56,11 @@ Cloudflare Pages recognizes this prefix and skips the build/deployment for the
 generated commit. This prevents DB function versioning and schema-export
 publication from rebuilding a frontend in the same repository.
 
+This prefix is Cloudflare-specific. It does not suppress Supabase GitHub
+Integration checks on commits to the production branch. Generated `db/**` commits
+should contain no migrations or deployable Supabase runtime changes, but Supabase
+may still start its integration workflow for the commit.
+
 Override with:
 
 - `GITHUB_GENERATED_COMMIT_PREFIX=<custom prefix>`
