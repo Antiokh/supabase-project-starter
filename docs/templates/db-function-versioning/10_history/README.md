@@ -1,15 +1,18 @@
 # History Layer
 
-This folder contains the custom history logic that sits on top of the baseline extension objects.
+History covers SQL functions and table DDL.
 
-Current responsibilities:
+Table DDL history uses:
 
-- `save_function_history`
-- `update_function_history`
-- `update_functions`
-- `diff_text`
-- optional helper views such as latest active versions
+- `archive.table_history`
+- `archive.build_table_ddl`
+- `archive.save_table_history`
+- `archive.update_table_history`
+- `archive.update_tables`
+- `archive.setup_table_history`
 
-This layer owns change detection.
+The generated table DDL includes columns/defaults, constraints, indexes, triggers,
+RLS state, and policies. Dropped tables create tombstone history rows so a DROP
+also triggers a new schema bundle.
 
-It should decide whether a function version actually changed before anything reaches the queue.
+History functions detect change only. They do not perform network publication.

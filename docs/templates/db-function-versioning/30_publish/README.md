@@ -1,11 +1,18 @@
 # Publication Layer
 
-This folder contains publication helpers that connect DB-side function history to the Git publication Edge Function.
+Publication helpers:
 
-Current responsibilities:
+- `archive.github_send_function`
+- `archive.github_send_tables`
+- `archive.push_updated_functions_to_github`
+- `archive.push_updated_tables_to_github`
 
-- `github_send_function`
-- publication wrappers
-- orchestration helpers
+The push helpers enqueue by default. Immediate processing is optional and defaults
+to zero.
 
-This layer should format payloads for the publication boundary, not embed GitHub client logic directly in SQL.
+The Edge Function owns GitHub formatting and authentication.
+
+Outputs:
+
+- `db/<schema>/<function_name>.sql`
+- `db/<schema>.sql`

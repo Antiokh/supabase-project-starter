@@ -1,15 +1,18 @@
 # Queue Layer
 
-This folder contains queue objects for Git publication.
+One durable queue carries:
 
-Contents:
+- `function` jobs
+- `table_bundle` jobs
 
-- queue table definition
-- queue processing function
-- dead-item inspection helpers
-- dead-item requeue helpers
+A table scan that changes several tables enqueues one bundle job, keyed by the
+newest table-history revision from that scan. Processing publishes the current
+active table set for that schema into `db/<schema>.sql`.
 
-Operational rule:
+Operational rules:
 
-- the queue should deduplicate by `function_history_id`
-- recovery should reset existing dead rows, not create duplicate queue rows
+- bounded batches
+- `FOR UPDATE SKIP LOCKED`
+- `pending / done / dead`
+- retry counter and last error retention
+- no unbounded HTTP work in the scan/orchestration path

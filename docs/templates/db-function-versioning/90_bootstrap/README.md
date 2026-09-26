@@ -1,11 +1,12 @@
 # Bootstrap Layer
 
-This folder contains one-time or first-run helpers.
+Bootstrap initializes both histories and enqueues initial Git artifacts.
 
-Current responsibilities:
+Use:
 
-- bootstrap all active functions into queue
-- immediate first-batch processing
-- helper orchestration for initial setup
+- `archive.bootstrap_functions_to_github(...)`
+- `archive.bootstrap_tables_to_github(...)`
 
-Bootstrap belongs after install, history, queue, and publication layers are already in place.
+Bootstrap enqueues by default. Drain with
+`archive.process_github_push_queue(...)` in bounded batches instead of publishing
+a large database synchronously.

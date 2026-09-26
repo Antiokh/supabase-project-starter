@@ -1,6 +1,6 @@
-# DB Function Versioning Apply Order
+# DB Code Versioning Apply Order
 
-Apply the starter SQL in this order:
+Apply in this order:
 
 1. `00_install/`
 2. `10_history/`
@@ -9,8 +9,15 @@ Apply the starter SQL in this order:
 5. `50_cron/`
 6. `90_bootstrap/`
 
-## Notes
+Within each folder, apply files in filename order.
 
-- install `supabase/sql/010_call_edge_function.sql` before the publish layer
-- bootstrap is last because it assumes history, queue, and publication helpers already exist
-- cron setup is optional, but if used, it should point only at small orchestration entrypoints
+Also install `supabase/sql/010_call_edge_function.sql` before the publication
+layer.
+
+The recommended scheduler model is two-stage:
+
+- scan/enqueue periodically
+- drain a small queue batch more frequently
+
+This separation is deliberate: network publication must not make schema scans or
+bootstrap calls hit statement/runtime timeouts.
