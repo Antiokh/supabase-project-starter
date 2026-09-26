@@ -5,6 +5,28 @@ import { optionalEnv, requireEnv } from '../_shared/env.ts';
 
 const dbg = createDbg(false);
 
+const DEFAULT_GENERATED_COMMIT_PREFIX = '[CF-Pages-Skip]';
+
+function generatedCommitPrefix() {
+    const configured = optionalEnv('GITHUB_GENERATED_COMMIT_PREFIX');
+
+    if (configured && ['none', 'off', 'false'].includes(configured.toLowerCase())) {
+        return '';
+    }
+
+    return configured || DEFAULT_GENERATED_COMMIT_PREFIX;
+}
+
+function withGeneratedCommitPrefix(message: string) {
+    const prefix = generatedCommitPrefix();
+
+    if (!prefix || message.startsWith(prefix)) {
+        return message;
+    }
+
+    return `${prefix} ${message}`;
+}
+
 function getOctokit() {
     return new Octokit({
         auth: requireEnv('GITHUB_TOKEN'),
@@ -57,7 +79,7 @@ Deno.serve(async req => {
         if (genericPath && typeof genericContent === 'string') {
             path = String(genericPath);
             content = genericContent;
-            commitMessage = genericMessage || `file update: ${path}`;
+            commitMessage = withGeneratedCommitPrefix(genericMessage || `file update: ${path}`);
             responseMode = 'file';
         } else {
             if (!schema || !functionName) {
@@ -93,10 +115,11 @@ Deno.serve(async req => {
 
             path = `db/${schema}/${functionName}.sql`;
             content = buildGroupedContent(schema, functionName, mode, sqlBlocks);
-            commitMessage =
+            commitMessage = withGeneratedCommitPrefix(
                 mode === 'grouped'
                     ? `sql function update: ${schema}.${functionName} (${sqlBlocks.length} overload${sqlBlocks.length === 1 ? '' : 's'})`
-                    : `sql function update: ${schema}.${functionName} (${legacyArgs ?? ''}) returns ${legacyReturnType ?? ''}`;
+                    : `sql function update: ${schema}.${functionName} (${legacyArgs ?? ''}) returns ${legacyReturnType ?? ''}`,
+            );
             responseMode = mode;
             overloadCount = sqlBlocks.length;
         }

@@ -91,7 +91,19 @@ Read only the guides you need:
 - `SERVICE_FAL_GUIDE.md`
 - `SERVICE_STORAGE_GUIDE.md`
 
-## 7. Prefer A Manual First Run
+## 7. Isolate Generated Git Publications From Frontend Builds
+
+If the same repository is connected to a frontend deployment provider:
+
+1. keep generated DB artifacts in an explicit generated path such as `db/**`
+2. keep the default `[CF-Pages-Skip]` prefix from `github-send`
+3. for Cloudflare Pages, exclude `db/**` in Build watch paths
+4. verify one generated publication does not trigger a frontend deployment
+
+Override `GITHUB_GENERATED_COMMIT_PREFIX` only if the target CI/CD system needs a
+different convention. Use `none` to disable the prefix entirely.
+
+## 8. Prefer A Manual First Run
 
 Before cron or automation:
 
@@ -103,7 +115,7 @@ Before cron or automation:
 
 Only then add scheduled execution.
 
-## 8. Wire Cron Last
+## 9. Wire Cron Last
 
 When the manual path is stable:
 
@@ -112,7 +124,7 @@ When the manual path is stable:
 3. wire schema export cadence if needed
 4. keep scheduler entrypoints small
 
-## 9. Agent Rule
+## 10. Agent Rule
 
 When starting work in a project derived from this starter, the minimum read set is:
 

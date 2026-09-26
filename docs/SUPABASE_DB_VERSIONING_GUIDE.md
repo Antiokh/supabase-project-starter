@@ -234,6 +234,29 @@ The cron entrypoint templates live here:
 
 - `docs/templates/db-function-versioning/50_cron/`
 
+## CI / Frontend Build Isolation
+
+Git publication of generated DB artifacts can create many repository commits.
+
+If the same repository is also connected to a frontend deployment provider such
+as Cloudflare Pages, those generated commits must not cause frontend rebuilds.
+
+Starter default:
+
+- `github-send` prefixes generated commits with `[CF-Pages-Skip]`
+- projects may override the prefix with `GITHUB_GENERATED_COMMIT_PREFIX`
+- set `GITHUB_GENERATED_COMMIT_PREFIX=none` only when skip behavior is unwanted
+
+For Cloudflare Pages, also configure Build watch paths to exclude the generated
+publication directory, normally:
+
+- `db/**`
+
+The commit prefix is the first line of defense; path filtering is the second.
+
+This applies to both function-version publication and generic generated files sent
+through `github-send`.
+
 ## Publication Boundary
 
 The database should not try to become a full GitHub client.

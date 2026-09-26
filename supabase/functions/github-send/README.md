@@ -11,7 +11,7 @@ Methods: `POST`
 Headers: service-only authorization recommended
 Query: none
 Body (JSON): grouped SQL function payload, legacy SQL function payload, or generic file payload
-Env: `GITHUB_TOKEN`, `GITHUB_OWNER`, `GITHUB_REPO`, optional `GITHUB_BRANCH`
+Env: `GITHUB_TOKEN`, `GITHUB_OWNER`, `GITHUB_REPO`, optional `GITHUB_BRANCH`, optional `GITHUB_GENERATED_COMMIT_PREFIX`
 Helpers: `../_shared/dbg.ts`, `../_shared/env.ts`
 Libraries: `npm:octokit`
 
@@ -42,3 +42,31 @@ Generic file payload example:
   "message": "schema export refresh: db/ddl.json"
 }
 ```
+
+
+## 8) Generated Commit / Cloudflare Pages Behavior
+
+All commits created by this Edge Function are generated artifacts.
+
+By default their commit message is prefixed with:
+
+`[CF-Pages-Skip]`
+
+Cloudflare Pages recognizes this prefix and skips the build/deployment for that
+commit. This prevents DB function versioning and schema-export publication from
+rebuilding a frontend that happens to live in the same repository.
+
+Override with:
+
+- `GITHUB_GENERATED_COMMIT_PREFIX=<custom prefix>`
+- `GITHUB_GENERATED_COMMIT_PREFIX=none` to disable prefixing
+
+For repositories also connected to Cloudflare Pages, configure Build watch paths
+as a second layer so generated-only changes do not trigger builds. Typical rule:
+
+- exclude `db/**`
+
+If generated exports live elsewhere, exclude those generated paths as well.
+
+Do not exclude application source paths or migration paths merely to save builds;
+the path exclusion is for generated publication artifacts.
