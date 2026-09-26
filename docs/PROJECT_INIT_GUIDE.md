@@ -104,6 +104,10 @@ The default `[CF-Pages-Skip]` prefix is intended for repositories deployed by
 Cloudflare Pages. Override `GITHUB_GENERATED_COMMIT_PREFIX` for another CI/CD
 provider, or use `none` to disable prefixing.
 
+Do not treat this prefix as a Supabase GitHub Integration skip directive. Supabase
+may still run its integration workflow for production-branch commits; generated
+`db/**` commits must therefore remain free of deployable Supabase changes.
+
 ## 8. Prefer A Manual First Run
 
 Before cron or automation:
