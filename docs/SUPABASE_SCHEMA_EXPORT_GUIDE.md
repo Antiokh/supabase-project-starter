@@ -92,14 +92,9 @@ When schema snapshots are published into a repository that also deploys a fronte
 generated snapshot commits should not rebuild the frontend.
 
 The starter `github-send` function prefixes generated commits with
-`[supabase-export]` by default. The marker is intentionally provider-neutral. Cloudflare Pages does not support
-registering arbitrary custom commit-message skip prefixes, so use Build watch
-paths there.
-
-If schema exports are written under `db/`, configure:
-
-- include: `*`
-- exclude: `db/*`
+`[CF-Pages-Skip]` by default. Cloudflare Pages recognizes `[CF-Pages-Skip]` and skips the deployment for
+generated schema-export commits. Build watch path exclusions for `db/*` may be
+added as a second layer if desired.
 
 Do not disable builds for hand-maintained application source or migrations.
 
