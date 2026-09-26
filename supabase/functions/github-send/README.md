@@ -1,7 +1,7 @@
 # github-send
 
 ## 1) Purpose
-Commit generated SQL function files into a GitHub repository.
+Commit generated SQL function files, table-schema bundles, and generic generated artifacts into a GitHub repository.
 
 ## 2) Auth / RBAC
 Treat this as a service-only endpoint. It is intended to be called by trusted DB or internal automation paths, not by browsers.
@@ -10,7 +10,7 @@ Treat this as a service-only endpoint. It is intended to be called by trusted DB
 Methods: `POST`
 Headers: service-only authorization recommended
 Query: none
-Body (JSON): grouped SQL function payload, legacy SQL function payload, or generic file payload
+Body (JSON): grouped SQL function payload, table bundle payload, legacy SQL function payload, or generic file payload
 Env: `GITHUB_TOKEN`, `GITHUB_OWNER`, `GITHUB_REPO`, optional `GITHUB_BRANCH`, optional `GITHUB_GENERATED_COMMIT_PREFIX`
 Helpers: `../_shared/dbg.ts`, `../_shared/env.ts`
 Libraries: `npm:octokit`
@@ -75,3 +75,26 @@ If generated exports live elsewhere, exclude those generated paths as well.
 Do not exclude application source paths or migration paths merely to save builds;
 the path exclusion is for generated publication artifacts.
 
+
+
+## 9) Table Bundle Mode
+
+Table versioning publishes a schema-wide bundle:
+
+`db/<schema>.sql`
+
+Example payload:
+
+```json
+{
+  "schema": "public",
+  "tables": [
+    {
+      "table_name": "profiles",
+      "ddl": "CREATE TABLE public.profiles (...);"
+    }
+  ]
+}
+```
+
+The same `[CF-Pages-Skip]` generated-commit prefix applies.
